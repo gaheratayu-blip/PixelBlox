@@ -6165,7 +6165,7 @@ act.wipeyes=async function(){
    if(u.email)msgs.push({t:ACC+await sha('sp-acc|'+String(u.email).toLowerCase()),p:''});
    msgs.push({t:ACC+'u'+await sha('u|'+k.toLowerCase()),p:''});
    {const lo=k.toLowerCase(),fv=(s2)=>{let h=2166136261;for(let i=0;i<s2.length;i++)h=Math.imul(h^s2.charCodeAt(i),16777619);return(h>>>0).toString(36)};
-    for(const id of [fv(lo),hs(lo)]){msgs.push({t:'shinpoblox/v9/usr/'+id,p:''},{t:'shinpoblox/v9/soc/'+id,p:''},{t:'shinpoblox/v9/own/uk/'+id,p:''})}}
+    for(const id of [fv(lo),fv(lo)+lo.length]){msgs.push({t:'shinpoblox/v9/usr/'+id,p:''},{t:'shinpoblox/v9/soc/'+id,p:''},{t:'shinpoblox/v9/own/uk/'+id,p:''})}}
    msgs.push({t:'shinpoblox/v9/tomb/'+await sha('u|'+k.toLowerCase()),p:JSON.stringify({ts:Date.now()})})}
   /* hapus lokal */
   const keep={};Object.keys(users).forEach(k=>{if(!names.includes(k))keep[k]=users[k]});
