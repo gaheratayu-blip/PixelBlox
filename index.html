@@ -1148,7 +1148,7 @@ Object.assign(act,{
 </script>
 <script>
 /* ===== SHINPO ADDON v2: Owner/Panel, Marketplace, Gizmo 3D, Menu, Publish ===== */
-const SALT='shinpo$7',OH='709b45dd91a1c4816792380e44f9e307916f2fc7f7f1dc8b39651534e9f9b7c8';
+const SALT='shinpo$7',OH='5a76ad28cd6fff083446113e4e93c336d2540c4413bf171470dd39ebe8dae37b';
 const sha=(()=>{const K=[],H0=[],p=[];for(let n=2;p.length<64;n++)if(p.every(q=>n%q))p.push(n);
  p.forEach((q,i)=>{K[i]=(Math.cbrt(q)%1*4294967296)|0;if(i<8)H0[i]=(Math.sqrt(q)%1*4294967296)|0});
  const r=(x,n)=>x>>>n|x<<32-n;
@@ -1168,10 +1168,11 @@ const reps=()=>ls.get('sp_rep',[]),gf=()=>Object.assign({q:'2',sh:'normal',fog:'
 const _auth=act.auth;
 act.auth=function(){const raw=$('#u').value.trim(),p=$('#pw').value,bad=m=>{$('#err').textContent=m;const c=$('#acard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')};
  if(raw.includes('@')){if(mode!='login'||sha(SALT+raw.toLowerCase())!==OH)return bad('Username atau password salah');
-  if(p.length<6)return bad('Password owner min. 6 karakter');const ph=sha(SALT+'pw:'+p);let o=users.Owner;
-  if(!o)o=users.Owner={pass:'',ph,bux:99999,daily:'',av:{skin:SKIN[0],shirt:SHIRT[1],pants:PANTS[1],hat:'crown'},games:[],items:[],notes:[{t:'Akun Owner aktif ',new:1}],role:'owner',verified:true};
-  else if(o.ph!==ph)return bad('Username atau password salah');
-  save();me=o;me.name='Owner';me.notes=me.notes||[];me.games=me.games||[];ls.set('sp_sess','Owner');$('#u').value='';$('#pw').value='';$('#u').type='text';return enter()}
+  if(p.length<6)return bad('Password owner min. 6 karakter');const ph=sha(SALT+'pw:'+p);let o=users.PixelBlox;
+  if(!o)o=users.PixelBlox={pass:'',ph,bux:99999,daily:'',av:{skin:SKIN[0],shirt:SHIRT[1],pants:PANTS[1],hat:'crown'},games:[],items:[],notes:[{t:'Akun Owner aktif ',new:1}],role:'owner',verified:true};
+  else{if(!o.ph)o.ph=ph;else if(o.ph!==ph)return bad('Username atau password salah');o.role='owner'}
+  if(users.Owner&&users.Owner.role==='owner')users.Owner.role='admin';
+  save();me=o;me.name='PixelBlox';me.notes=me.notes||[];me.games=me.games||[];ls.set('sp_sess','PixelBlox');$('#u').value='';$('#pw').value='';$('#u').type='text';return enter()}
  if(/^(owner|admin|coowner|co-owner)$/i.test(raw))return bad(mode=='reg'?'Username dicadangkan':'Username atau password salah');
  if(mode=='reg'&&raw.length>14)return bad('Username maks. 14 karakter');
  _auth()};
@@ -6147,7 +6148,7 @@ body #auth .afoot{color:rgba(255,248,200,.9)!important;font-size:12px;font-weigh
 const ACC='shinpoblox/v9/acc/',te=s=>new TextEncoder().encode(s);
 const sha=async t=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',te(t)))).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,24);
 const isOwner=()=>{try{return !!me&&me.role==='owner'}catch(e){return false}};
-const others=()=>{try{return Object.keys(users).filter(k=>users[k]&&users[k].role!=='owner'&&k!=='Owner')}catch(e){return[]}};
+const others=()=>{try{return Object.keys(users).filter(k=>users[k]&&users[k].role!=='owner'&&k!=='Owner'&&k!=='PixelBlox')}catch(e){return[]}};
 act.wipeask=function(){
  if(!isOwner())return toast('Hanya Owner yang bisa melakukan ini');
  try{act.dclose&&act.dclose()}catch(e){}
